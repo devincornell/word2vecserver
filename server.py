@@ -55,7 +55,7 @@ def mostsimilar():
 
 def runserver():
     realmodel = True
-    domain = 'localhost'
+    domain = '0.0.0.0'
     port = 5000
     fname = "data/GoogleNews-vectors-negative300.bin"
     
@@ -69,7 +69,7 @@ def runserver():
             model = json.load(f)
 
     print('Runnin server..')
-    app.run()
+    app.run(host=domain)
 
 if __name__ == "__main__":
     runserver()
