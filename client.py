@@ -5,8 +5,9 @@ import numpy as np
 from urllib.parse import quote_plus
 
 class WTVClient():
-    def __init__(self, domain='localhost', port=5000, timeout=2):
+    def __init__(self, domain='localhost', port=5000, timeout=2, verb=False):
         self.conn = http.client.HTTPConnection(domain,port)
+        self.verb = verb
 
     def getvec(self, word):
         self.conn.request('GET', '/getvec?word=' + word)
@@ -30,13 +31,11 @@ class WTVClient():
         for k,v in headers.items():
             if str(type(v)) == "<class 'int'>":
                 v = str(v)
-            print(type(v))
-            print(v)
             qdata += str(k) + '=' + quote_plus(json.dumps(v)) + '&'
 
         #qdata = list(map(str,map(quote_plus, qdata)))
         qstr = '/mostsimilar?' + qdata
-        print('Sending:', qstr)
+        if self.verb: print('Sending:', qstr)
         self.conn.request('GET', qstr)
         r = self.conn.getresponse()
         if r.status == 200:
@@ -46,7 +45,7 @@ class WTVClient():
         return d
 
 if __name__ == '__main__':
-    wtv = WTVClient(domain='localhost', port=5000)
+    wtv = WTVClient(domain='salinas.cs.ucsb.edu', port=5000)
 
     print('Get vectors:')
     kv = wtv.getvec('king')
