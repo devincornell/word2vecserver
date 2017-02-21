@@ -16,12 +16,12 @@ def peek(f,numchar):
 	f.seek(p)
 	return s
 	
-class Word2Vec():
+class WordToVec():
 	
 	def __str(self):
 		return '<Word2Vec;words:{},dimensions:{}'.format(self.numwords,self.numdim)
 	
-	def __init__(self, fname, testwords=np.inf):
+	def __init__(self, fname, testwords=np.inf, verbose=False):
 		
 		f = gzip.open(fname,'rb')
 		
@@ -41,10 +41,10 @@ class Word2Vec():
 		self.numdim = numdim
 		
 		# allocate memory for dataframe
-		print('Allocating memory for dataframe.')
+		if verbose: print('Allocating memory for dataframe.')
 		self.df = pd.DataFrame(np.zeros((numwords,numdim)))
 			
-		print('Reading data from file.')
+		if verbose: print('Reading data from file.')
 		wordlist = []
 		for i in range(numwords):
 			
@@ -78,16 +78,28 @@ class Word2Vec():
 			if i > testwords: break
 		f.close()
 		
-		print('Indexing data.')
+		if verbose: print('Indexing data.')
 		self.df['words'] = wordlist
 		self.df.set_index('words',inplace=True)
 		self.df.sort_index(inplace=True)
-		print('Finished loading dataset.')
+		if verbose: print('Finished loading dataset.')
 		
 		return
 
+	def get_word(self, word):
+		return list(self.df.loc[word,:])
+
 if __name__ == '__main__':
 	fname = "data/GoogleNews-vectors-negative300.bin.gz"
-	wv = Word2Vec(fname, testwords=100000)
+	wv = WordToVec(fname, testwords=500, verbose=True)
 	print(wv.df.head())
+
+	words = list(wv.df.index[0:10])
+
+	print(words)
+
+	for word in words:
+		print(word + ':')
+		print(wv.get_word(word))
+		print()
 	
