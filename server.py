@@ -16,7 +16,8 @@ def hello():
 def getword(word):
 
     resp = {'word':word}
-    resp['vec'] = list(model[word])
+    resp['vec'] = list(map(float,model[word]))
+    #print(resp['vec'])
     # show the user profile for that user
     return json.dumps(resp)
 
