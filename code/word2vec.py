@@ -73,18 +73,21 @@ class Word2Vec():
 			
 			wordlist.append(w)
 			
-			print(i)
+			#print(i)
+			if i % 10000 == 0: print('{} of {}'.format(i,numwords))
 			if i > testwords: break
 		f.close()
 		
 		print('Indexing data.')
-		self.df.set_index(wordlist,inplace=True)
+		self.df['words'] = wordlist
+		self.df.set_index('words',inplace=True)
+		self.df.sort_index(inplace=True)
 		print('Finished loading dataset.')
 		
 		return
 
 if __name__ == '__main__':
 	fname = "data/GoogleNews-vectors-negative300.bin.gz"
-	wv = Word2Vec(fname, testwords=100)
+	wv = Word2Vec(fname, testwords=100000)
 	print(wv.df.head())
 	
