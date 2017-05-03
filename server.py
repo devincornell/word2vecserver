@@ -73,4 +73,4 @@ def runserver(domain='localhost', port=8080, fname='data/GoogleNews-vectors-nega
 
 if __name__ == "__main__":
     fname = "data/GoogleNews-vectors-negative300.bin"
-    runserver(domain='0.0.0.0', port=8080, filename=fname)
+    runserver(domain='0.0.0.0', port=8080, fname=fname)
